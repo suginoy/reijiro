@@ -15,15 +15,15 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = false
 
   config.before(:suite) do
-    DatabaseCleaner.strategy = :truncation
+    DatabaseRewinder.clean_all
   end
 
   config.before(:each) do
-    DatabaseCleaner.start
+    DatabaseRewinder.clean
   end
 
   config.after(:each) do
-    DatabaseCleaner.clean
+    DatabaseRewinder.clean
   end
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures

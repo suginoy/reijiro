@@ -29,7 +29,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'capybara'
   gem 'capybara-webkit'
-  gem 'database_cleaner'
+  gem 'database_rewinder'
   gem 'launchy'
   gem 'factory_girl_rails'
   gem 'timecop'
