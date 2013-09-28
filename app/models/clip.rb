@@ -13,12 +13,11 @@ class Clip < ActiveRecord::Base
     8 => 4.months
   }
 
-  default_scope order('updated_at DESC')
-  scope :done, where('status == 8')  # I'm done with the word!
-  scope :undone, where('status != 8')  # Still working on it!
-  scope :level, lambda{|level| joins(:word).where('words.level == ?', level)}
-
-  scope :overdue, lambda{|status| where('status = ? AND updated_at < ?', status, Time.now - INTERVAL[status])}
+  default_scope -> { order('updated_at DESC') }
+  scope :done, -> { where('status == 8') } # I'm done with the word!
+  scope :undone, -> { where('status != 8') } # Still working on it!
+  scope :level, -> (level) { joins(:word).where('words.level == ?', level) }
+  scope :overdue, -> (status) { where('status = ? AND updated_at < ?', status, Time.now - INTERVAL[status]) }
 
   class << self
     def overdue_count
