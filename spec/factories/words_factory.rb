@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 FactoryGirl.define do
   factory :word do
-    sequence(:entry) {|n| "word#{n}"}
+    sequence(:entry) { |n| "word#{n}" }
     level 0
     definition "■apple : りんご"
 

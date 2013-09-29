@@ -66,7 +66,7 @@ class WordsController < ApplicationController
 
   def import
     @words = []
-    new_words = params.select {|k, v| v == "1"}.keys
+    new_words = params.select { |k, v| v == "1" }.keys
     new_words.each do |w|
       @words << Word.search(w)
     end

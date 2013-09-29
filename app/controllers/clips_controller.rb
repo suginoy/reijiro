@@ -10,7 +10,7 @@ class ClipsController < ApplicationController
   end
 
   def all
-    @words = Word.joins(:clip).order('updated_at DESC')
+    @words = Word.joins(:clip).order(updated_at: :desc)
     @list_title = "All clips"
   end
 
