@@ -1,19 +1,19 @@
 Reijiro::Application.routes.draw do
-  resources :words, except: [:new]
-  resources :clips, only: [:index, :update, :destroy]
+  resources :words,  except: [:new]
+  resources :clips,  only: [:index, :update, :destroy]
 
-  match '/clips/all' => 'clips#all', as: 'all_clips'
+  get   '/clips/all' => 'clips#all', as: 'all_clips'
 
-  match '/levels/' => 'levels#index', as: 'levels'
-  match '/levels/:level' => 'levels#show', as: 'level'
-  match '/levels/known/:id' => 'levels#known', as: 'known', via: :post
+  get   '/levels/' => 'levels#index', as: 'levels'
+  get   '/levels/:level' => 'levels#show', as: 'level'
+  post  '/levels/known/:id' => 'levels#known', as: 'known'
 
-  match '/search' => 'words#search', as: 'search'
-  match '/alc(/:level)' => 'words#import_from_alc12000', as: 'alc', via: :post
-  match '/stats' => 'clips#stats', as: 'stats'
-  match '/next' => 'clips#nextup', as: 'next'
-  match '/import' => 'words#import', as: 'import', via: :post
-  match '/async_import/:word' => 'words#async_import', via: :post
+  get   '/search' => 'words#search', as: 'search'
+  post  '/alc(/:level)' => 'words#import_from_alc12000', as: 'alc'
+  get   '/stats' => 'clips#stats', as: 'stats'
+  get   '/next' => 'clips#nextup', as: 'next'
+  post  '/import' => 'words#import', as: 'import'
+  post  '/async_import/:word' => 'words#async_import'
 
-  root to: 'clips#next'
+  root 'clips#next'
 end
