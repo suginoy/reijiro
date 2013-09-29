@@ -6,8 +6,8 @@ class Check < ActiveRecord::Base
 
   class << self
     def check_months
-      checks = Check.order('created_at')
-      checks.group_by {|t| t.created_at.to_date}
+      checks = Check.order(:created_at)
+      checks.group_by { |t| t.created_at.to_date }
     end
   end
 end

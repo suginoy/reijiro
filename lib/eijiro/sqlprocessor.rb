@@ -75,7 +75,7 @@ class EijiroDictionary
     def tokenize(str)
       str.split(/[ \-\.\'\%\"\/\,]/)
         .map(&:downcase)
-        .reject {|s| s.size <= 1 || COMMON_TOKENS.include?(s)}
+        .reject { |s| s.size <= 1 || COMMON_TOKENS.include?(s) }
     end
 
     def sqlstr(str)
