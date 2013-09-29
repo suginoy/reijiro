@@ -19,7 +19,7 @@ class Word < ActiveRecord::Base
   class << self
     def lookup(query)
       query = normalize_query(query)
-      items = Item.where(entry: query).all
+      items = Item.where(entry: query).to_a
       items += Invert.where(token: query).map(&:item)
       items.uniq.map(&:body).join("\n")
     end

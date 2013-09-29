@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.0.0'
 
-gem 'rails', '3.2.9'
+gem 'rails', '>= 4.0.0'
 
 gem 'sqlite3'
 gem 'haml-rails'
@@ -20,16 +20,16 @@ group :development do
 end
 
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'uglifier', '>= 1.0.3'
+  gem 'sass-rails',   '~> 4.0.0'
+  gem 'coffee-rails', '~> 4.0.0'
+  gem 'uglifier', '>= 1.3.0'
 end
 
 group :development, :test do
   gem 'rspec-rails'
   gem 'capybara'
   gem 'capybara-webkit'
-  gem 'database_cleaner'
+  gem 'database_rewinder'
   gem 'launchy'
   gem 'factory_girl_rails'
   gem 'timecop'

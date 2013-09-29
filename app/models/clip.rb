@@ -14,6 +14,7 @@ class Clip < ActiveRecord::Base
   }
 
   default_scope -> { order('updated_at DESC') }
+
   scope :done, -> { where('status == 8') } # I'm done with the word!
   scope :undone, -> { where('status != 8') } # Still working on it!
   scope :level, -> (level) { joins(:word).where('words.level == ?', level) }
