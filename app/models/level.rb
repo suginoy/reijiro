@@ -1,6 +1,6 @@
 class Level < ActiveRecord::Base
-  scope :known,   where(known: true)
-  scope :unknown, where(known: false)
+  scope :known,   -> { where(known: true) }
+  scope :unknown, -> { where(known: false) }
 
   class << self
     def yet_to_import(level, max = 10)
