@@ -10,6 +10,9 @@ gem 'nokogiri'
 gem 'kaminari'
 gem 'thin'
 
+# TODO: Strong Parametersに対応する
+gem 'protected_attributes'
+
 gem 'spinjs-rails'
 gem 'jquery-rails'
 gem 'capistrano'
