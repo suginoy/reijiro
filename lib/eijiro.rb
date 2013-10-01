@@ -8,7 +8,7 @@ require 'eijiro/sqlprocessor'
 class EijiroDictionary
   def initialize(path)
     @eijiro_files = find_dictionaries(path)
-    @dbfile = File.join(Rails.root, %w(db development.sqlite3))
+    @dbfile = File.join(Rails.root, %w(db development.sqlite3)) # TODO: Rails.env使う
     @level_table = {}
     @sql = SqlProcessor.new
     @id = 0
@@ -22,7 +22,7 @@ class EijiroDictionary
         pbar = ProgressBar.new("Converting", number_of_lines)
 
         f.each_line do |l|
-          line = Kconv.kconv(l, Kconv::UTF8, Kconv::SJIS)
+          line = Kconv.kconv(l, Kconv::UTF8, Kconv::SJIS) # TODO: Kconv使わない
           line.gsub!(/◆.+$/, '')
           if line =~ /■(.*?)(?:  ?\{.*?\})? : (【レベル】([0-9]+))?/
             @id += 1
