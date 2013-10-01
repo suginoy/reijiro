@@ -1,4 +1,5 @@
 class Level < ActiveRecord::Base
+  # TODO: add validation
   scope :known,   -> { where(known: true) }
   scope :unknown, -> { where(known: false) }
 
@@ -7,9 +8,9 @@ class Level < ActiveRecord::Base
       words =
         Level.unknown
         .where(level: level)
-        .where("word NOT IN (?)", Word.imported_list)
+        .where("word NOT IN (?)", Word.imported_list)  # NOT使わない
         .limit(max).pluck(:word)
-      unless words.empty?
+      unless words.empty?  # if 使う
         words
       else
         nil

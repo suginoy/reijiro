@@ -3,6 +3,7 @@ require 'progressbar'
 
 class EijiroDictionary
   class SqlProcessor
+    # TODO: マスタ化すると他でも使える
     COMMON_TOKENS = %w(i ll  mr ok a about after all also an and any are as at back be because been before but by can can t come could day did didn do don down even first for from get give go going good got great had has have he he her here hey him his how if in into is it its just know like little look made make man may me mean men more most much must my new no not now of oh okay on one only or other our out over person really right said say see she should so some something such take tell than that that the their them then there these they think this time to two up upon us use very want was way we well were what when which who why will with work would yeah year yes you you re your)
 
     class SqlFile
@@ -17,7 +18,7 @@ class EijiroDictionary
 
       def open
         File.open(current_file, "w") do |f|
-          f.write "BEGIN TRANSACTION;\n"
+          f.write "BEGIN TRANSACTION;\n" # TODO: 改行付き書くメソッド
         end
       end
 

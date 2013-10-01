@@ -1,5 +1,6 @@
 class ClipsController < ApplicationController
   def index
+    # TODO: リテラル使わずにハッシュで書く
     @words = Word.joins(:clip).where('status != 8').order('updated_at DESC').page params[:page]
     @list_title = "Clipped words"
 
@@ -17,7 +18,7 @@ class ClipsController < ApplicationController
   def next
     @clip = Clip.next_clip
     if @clip
-      @word = @clip.word
+      @word = @clip.word # TODO: コントローラから返す必要がない
       render template: 'words/show'
     else
       redirect_to levels_path, notice: "No more items to review. Want to clip a little more words?"
@@ -32,6 +33,8 @@ class ClipsController < ApplicationController
 
   def update
     @clip = Clip.find(params[:id])
+    # TODO: touchからupdate_attributesまで1メソッドにする / createではなくbuild使う
+    # TODO: CheckをWordに紐づけずClipに紐づくようにする(勘定パタン
     @clip.touch # touch the record, even if there's no change
 
     Check.create({word_id: @clip.word.id, oldstat: @clip.status, newstat: params[:clip]['status']})
