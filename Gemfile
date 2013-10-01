@@ -36,4 +36,9 @@ group :development, :test do
   gem 'launchy'
   gem 'factory_girl_rails'
   gem 'timecop'
+  gem 'pry-rails'
+  gem 'pry-debugger'
+  gem 'pry-doc'
+  gem 'pry-coolline'
+  gem 'awesome_print'
 end
