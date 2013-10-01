@@ -18,10 +18,10 @@ class WordsController < ApplicationController
 
   def create
     @word = Word.new(params[:word])
+    @word.build_clip(status: 0) # 元々の仕様levelもコピーされるべきだった？
 
     respond_to do |format|
       if @word.save
-        @word.create_clip(status: 0) # TODO: buildとsaveにする
         format.html { redirect_to @word, notice: 'Clip was successfully created.' }
         format.json { render json: @word, status: :created, location: @word }
       else
@@ -53,8 +53,8 @@ class WordsController < ApplicationController
   end
 
   def search
-    @query = params[:query].downcase.chomp
-    if @word = Word.where(entry: @query).first
+    @query = params[:query].downcase.chomp # TODO: Strong Prameters使う/@queryはインスタンス変数の必要があるか確認
+    if @word = Word.find_by(entry: @query)
       flash.now[:success] = "Already clipped!"
       render 'show'
     elsif @word = Word.search(@query)
@@ -66,17 +66,17 @@ class WordsController < ApplicationController
 
   def import
     @words = []
-    new_words = params.select { |k, v| v == "1" }.keys
+    new_words = params.select { |k, v| v == "1" }.keys # TODO: ナニコレ？
     new_words.each do |w|
       @words << Word.search(w)
     end
-    flash[:notice] = "Imported #{@words.count} words."
+    flash[:notice] = "Imported #{'word'.pluralize(@words.count)}."
     render "words/import"
   end
 
   def async_import
     @query = params[:word].downcase.chomp
-    unless Word.where(entry: @query).first # TODO: if使う
+    if Word.where(entry: @query).empty?
       EM.defer do
         @word = Word.search(@query)
       end

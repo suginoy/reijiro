@@ -15,38 +15,36 @@ class Word < ActiveRecord::Base
 
   def set_level
     l = Level.where(word: entry) # TODO: findを使う
-    self.level = l.empty? ? 0 : l.first.level  # TODO: Levelのモデル名を変更するか
+    self.level = l.empty? ? 0 : l.first.level  # TODO: Levelのモデル名を変更するか#valueをvalueにする
   end
 
   class << self
     def lookup(query)
-      query = normalize_query(query) # TODO: 引数を上書きしない
-      items = Item.where(entry: query).to_a
-      items += Invert.where(token: query).map(&:item) # TODO: Itemから引いてくる
-      items.uniq.map(&:body).join("\n") # TODO: 先にpluckかselectで絞り込む
+      normalized_query = normalize_query(query)
+      items = Item.where(entry: normalized_query).to_a
+      items += Invert.where(token: normalized_query).map(&:item) # TODO: Itemから引いてくる
+      items.uniq.map(&:body).join("\n") # TODO: 先にpluckかselectで絞り込む/uniqにブロック使う
     end
 
     def search(query)
-      query = normalize_query(query) # TODO: 引数を上書きしない
-      definition = lookup(query)
-      thesaurus = lookup_thesaurus(query)
-      unless definition.empty? # TODO: if使う
-        word = Word.create(entry: query, # new使う
-                           thesaurus: thesaurus,
-                           definition: definition)
-        word.create_clip(status: 0) # buildとsave!使う
-        word
-      else
+      word_name = normalize_query(query)
+      definition = lookup(word_name)
+      thesaurus = lookup_thesaurus(word_name)
+      if definition.empty?
         nil # TODO: nil返さない
+      else
+        word = Word.new(entry: word_name, thesaurus: thesaurus, definition: definition)
+        word.build_clip(status: 0)
+        word.save!
       end
     end
 
     # search the query on the thesaurus.com and paste part of the
     # result.
     def lookup_thesaurus(query)
-      query = normalize_query(query).gsub(/ /, '+') # TODO: 引数を上書きしない
+      normalized_query = normalize_query(query).gsub(/ /, '+')  # TODO: gsubもnormarilze_queryメソッド内部に入らないか
       begin
-        html = Nokogiri::HTML(open("http://thesaurus.com/browse/#{query}").read)
+        html = Nokogiri::HTML(open("http://thesaurus.com/browse/#{normalized_query}").read)
         html.css('.sep_top')[0].to_s.gsub(/<\/a>/, '').gsub(/<a[^>]+>/, '')
       rescue
         "none"
@@ -54,8 +52,7 @@ class Word < ActiveRecord::Base
     end
 
     def imported_list
-      list = Word.pluck(:entry)
-      list.empty? ? '' : list
+      Word.pluck(:entry)
     end
 
     private

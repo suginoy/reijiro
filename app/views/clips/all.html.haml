@@ -1,5 +1,5 @@
 %h2= @list_title
 %p
-  %b= "#{@words.count} words"
+  %b= "#{@words.length} #{'word'.pluralize(@words.length)}"
 - @words.each do |w|
   = link_to "#{w.entry} ", word_path(w), title: "#{short_definition(w.definition)}"
