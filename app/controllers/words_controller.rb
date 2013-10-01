@@ -2,7 +2,7 @@ class WordsController < ApplicationController
   before_filter :load_word, only: [:show, :edit, :update, :destroy]
 
   def index
-    @words = Word.limit(50)
+    @words = Word.limit(50)  # TODO: ->定数化->マスタ化
     respond_to do |format|
       format.html
       format.json { render json: @words }
@@ -21,7 +21,7 @@ class WordsController < ApplicationController
 
     respond_to do |format|
       if @word.save
-        @word.create_clip(status: 0)
+        @word.create_clip(status: 0) # TODO: buildとsaveにする
         format.html { redirect_to @word, notice: 'Clip was successfully created.' }
         format.json { render json: @word, status: :created, location: @word }
       else
@@ -76,7 +76,7 @@ class WordsController < ApplicationController
 
   def async_import
     @query = params[:word].downcase.chomp
-    unless Word.where(entry: @query).first
+    unless Word.where(entry: @query).first # TODO: if使う
       EM.defer do
         @word = Word.search(@query)
       end

@@ -10,12 +10,12 @@ class LevelsController < ApplicationController
     @words =
       Level.unknown
       .where(level: params[:level])
-      .where("word NOT IN (?)", Word.imported_list)
+      .where("word NOT IN (?)", Word.imported_list) # TODO: NOT使わない
   end
 
   def known
-    l = Level.where(id: params[:id]).first
-    l.update_column(:known, true)
+    l = Level.where(id: params[:id]).first # TODO: findつかう
+    l.update_column(:known, true) # TODO: update_columnのインターフェース変更確認
     render text: params[:id]
   end
 end
