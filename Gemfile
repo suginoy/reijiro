@@ -18,10 +18,6 @@ gem 'jquery-rails'
 gem 'capistrano'
 gem 'rvm-capistrano'
 
-group :development do
-  gem 'awesome_print'
-end
-
 group :assets do
   gem 'sass-rails',   '~> 4.0.0'
   gem 'coffee-rails', '~> 4.0.0'
@@ -41,4 +37,5 @@ group :development, :test do
   gem 'pry-doc'
   gem 'pry-coolline'
   gem 'awesome_print'
+  gem 'rails_best_practices'
 end
