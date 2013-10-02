@@ -60,7 +60,7 @@ class Clip < ActiveRecord::Base
         done   = Clip.level(level).done.count + Level.where(level: level).known.count # TODO: already = done + known のようなロジックにできないか
         total  = Level.where(level: level).count
         remain = total - (undone + done)
-        stats[l] = { undone: undone, done: done, total: total, remain: remain }  # TODO: l.to_sするかArrayにする
+        stats[level] = { undone: undone, done: done, total: total, remain: remain }  # TODO: l.to_sするかArrayにする
       end
 
       stats['total'] = { # TODO: 再度SQLを投げずにキャッシュしたのを使えないか
