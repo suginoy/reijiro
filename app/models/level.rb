@@ -8,12 +8,12 @@ class Level < ActiveRecord::Base
       words =
         Level.unknown
         .where(level: level)
-        .where("word NOT IN (?)", Word.imported_list)  # NOT使わない
+        .where.not(word: Word.imported_list)
         .limit(max).pluck(:word)
-      unless words.empty?  # if 使う
-        words
+      if words.empty?
+        nil # TODO: nilを返す必要があるか確認
       else
-        nil
+        words
       end
     end
   end

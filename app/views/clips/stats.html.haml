@@ -48,13 +48,13 @@
       %td Remain
       %td Total
   %tbody
-    - (1..12).each do |l|
+    - (1..12).each do |level|
       %tr
-        %td= "Level #{l}"
-        %td= @stats[l][:undone]
-        %td= @stats[l][:done]
-        %td= @stats[l][:remain]
-        %td= @stats[l][:total]
+        %td= "Level #{level}"
+        %td= @stats[level][:undone]
+        %td= @stats[level][:done]
+        %td= @stats[level][:remain]
+        %td= @stats[level][:total]
 
     %tr
       %td= "Extra"

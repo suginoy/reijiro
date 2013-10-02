@@ -1,8 +1,8 @@
 %h2 Clip new words
 %p ボタンをクリックすると、それぞれのレベルの全単語を表示して個別にクリップできます。
 .import-list
-  - (1..12).each do |l|
+  - (1..12).each do |level|
     .level-box
-      %h3 Level #{l}
-      .stat= "#{Clip.level(l).count + Level.where(level: l).where(known: true).count} / #{Level.where(level: l).count}"
-      = link_to "このレベルの単語", level_path(l)
+      %h3 Level #{level}
+      .stat= "#{Clip.level(level).count + Level.where(level: level).where(known: true).count} / #{Level.where(level: level).count}"
+      = link_to "このレベルの単語", level_path(level)
