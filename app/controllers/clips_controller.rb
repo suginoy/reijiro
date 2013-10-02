@@ -1,7 +1,7 @@
 class ClipsController < ApplicationController
   def index
     # TODO: リテラル使わずにハッシュで書く
-    @words = Word.joins(:clip).where('status != 8').order('updated_at DESC').page params[:page]
+    @words = Word.joins(:clip).where.not(clips: { status: 8 }).order("clips.updated_at DESC").page params[:page]
     @list_title = "Clipped words"
 
     respond_to do |format|
@@ -11,7 +11,7 @@ class ClipsController < ApplicationController
   end
 
   def all
-    @words = Word.joins(:clip).order(updated_at: :desc)
+    @words = Word.joins(:clip).order("clips.updated_at DESC")
     @list_title = "All clips"
   end
 
@@ -33,11 +33,11 @@ class ClipsController < ApplicationController
 
   def update
     @clip = Clip.find(params[:id])
-    # TODO: touchからupdate_attributesまで1メソッドにする / createではなくbuild使う
+    # TODO: touchからupdate_attributesまで1メソッドにする
     # TODO: CheckをWordに紐づけずClipに紐づくようにする(勘定パタン
-    @clip.touch # touch the record, even if there's no change
+    @clip.touch # touch the record, even if there's no change # TODO: 削除可能か調べる
 
-    Check.create({word_id: @clip.word.id, oldstat: @clip.status, newstat: params[:clip]['status']})
+    @clip.word.build_check(oldstat: @clip.status, newstat: params[:clip]['status'])
 
     respond_to do |format|
       if @clip.update_attributes(params[:clip])
