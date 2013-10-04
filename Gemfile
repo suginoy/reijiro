@@ -29,6 +29,7 @@ group :development, :test do
   gem 'capybara-webkit'
   gem 'database_rewinder'
   gem 'launchy'
+  gem 'poltergeist'
   gem 'factory_girl_rails'
   gem 'timecop'
   gem 'pry-rails'
