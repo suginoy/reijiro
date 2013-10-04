@@ -15,6 +15,7 @@ gem 'protected_attributes'
 
 gem 'spinjs-rails'
 gem 'jquery-rails'
+gem 'jquery-migrate-rails'
 gem 'capistrano'
 gem 'rvm-capistrano'
 
