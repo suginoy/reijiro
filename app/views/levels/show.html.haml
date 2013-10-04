@@ -15,14 +15,14 @@
     .known
     .clip
 
-- @words.each_slice(@words.size / 3) do |words|
+- @levels.each_slice(@levels.size / 3) do |levels|
   .span3
-    - words.each do |w|
+    - levels.each do |level|
       .word
         .known.btn.btn-small I know this!
         .clip.btn.btn-small Clip!
         .id
-          = w.id
+          = level.id
         .entry
-          = w.word
-        = truncate(w.definition, length: 30)
+          = level.entry
+        = truncate(level.definition, length: 30)
