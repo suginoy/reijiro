@@ -37,7 +37,7 @@ class ClipsController < ApplicationController
     # TODO: CheckをWordに紐づけずClipに紐づくようにする(勘定パタン
     @clip.touch # touch the record, even if there's no change # TODO: 削除可能か調べる
 
-    @clip.word.build_check(oldstat: @clip.status, newstat: params[:clip]['status'])
+    @clip.word.checks.build(oldstat: @clip.status, newstat: params[:clip]['status'])
 
     respond_to do |format|
       if @clip.update_attributes(params[:clip])
