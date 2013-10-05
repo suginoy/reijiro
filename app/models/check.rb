@@ -7,7 +7,7 @@ class Check < ActiveRecord::Base
   scope :today, -> { where('created_at > ?', Time.now.beginning_of_day + DAY_START_HOUR.hours) }
 
   class << self
-    def check_months # TODO: メソッド名の意図
+    def checks_per_date
       checks = Check.order(:created_at)
       checks.group_by { |t| t.created_at.to_date }
     end
