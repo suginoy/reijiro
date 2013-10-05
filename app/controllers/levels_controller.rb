@@ -8,15 +8,15 @@ class LevelsController < ApplicationController
   end
 
   def show
-    @words =
+    @levels =
       Level.unknown
       .where(level: params[:level])
-      .where.not(word: Word.imported_list) # TODO: NOT使わない
+      .where.not(entry: Word.imported_entries) # TODO: NOT使わない
   end
 
   def known
-    l = Level.find(params[:id])
-    l.update_column(:known, true) # TODO: update_columnのインターフェース変更確認
+    level = Level.find(params[:id])
+    level.update_column(:known, true) # TODO: update_columnのインターフェース変更確認
     render text: params[:id]
   end
 end
