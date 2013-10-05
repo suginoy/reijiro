@@ -1,7 +1,6 @@
 class ClipsController < ApplicationController
   def index
-    # TODO: リテラル使わずにハッシュで書く
-    @words = Word.joins(:clip).where.not(clips: { status: 8 }).merge(Clip.display).page params[:page]
+    @words = Word.clipped.merge(Clip.display.undone).page params[:page] # Clip.undone.displayだとバグになる
     @list_title = "Clipped words"
 
     respond_to do |format|
