@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131004164405) do
+ActiveRecord::Schema.define(version: 20131005132739) do
 
   create_table "checks", force: true do |t|
     t.integer  "word_id"
@@ -30,11 +30,14 @@ ActiveRecord::Schema.define(version: 20131004164405) do
     t.datetime "updated_at"
   end
 
+  add_index "clips", ["word_id"], name: "index_clips_on_word_id", unique: true
+
   create_table "inverts", force: true do |t|
     t.string  "token"
     t.integer "item_id"
   end
 
+  add_index "inverts", ["item_id"], name: "index_inverts_on_item_id"
   add_index "inverts", ["token"], name: "index_inverts_on_token"
 
   create_table "items", force: true do |t|
