@@ -60,7 +60,7 @@ class ClipsController < ApplicationController
   end
 
   def stats
-    @check_months = Check.check_months
+    @checks_per_date = Check.checks_per_date
     @stats = Clip.stats
 
     respond_to do |format|
