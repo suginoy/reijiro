@@ -7,8 +7,9 @@ class Word < ActiveRecord::Base
   # TODO: Levelとの間に関連を持たせる
   validates :entry, :definition, :level, presence: true
 
-  # TODO: NOT IN/JOIN使わない
-  scope :unclipped, -> { where('id NOT IN (SELECT word_id FROM words INNER JOIN clips ON words.id = clips.word_id)') }
+  scope :clipped, -> { joins(:clip) }
+  # TODO: NOT IN/JOIN使わない-> カウンタキャッシュにする/このscope使われていない
+  scope :unclipped, -> { where.not(id: self.clipped.pluck(:id)) }
 
   before_save :set_level # TODO: before_validationにする
 
