@@ -23,6 +23,7 @@
               = link_to "Done today: #{Check.today.count}"
           %ul.nav.pull-right
             %li
+              -# TODO: form_tagにする
               %form.navbar-search{action: '/search/', method: 'get'}
                 %input.search-query{id: 'query', name: 'query', type: 'text', placeholder: 'Search'}
 
