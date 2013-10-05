@@ -16,9 +16,9 @@ class ClipsController < ApplicationController
   end
 
   def next
-    @clip = Clip.next_clip
-    if @clip
-      @word = @clip.word # TODO: コントローラから返す必要がない
+    clip = Clip.next_clip
+    if clip
+      @word = clip.word
       render template: 'words/show'
     else
       redirect_to levels_path, notice: "No more items to review. Want to clip a little more words?"

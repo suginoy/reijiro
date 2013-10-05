@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 module WordsHelper
-  def status_button(duration, status)
-    link_to duration, clip_path(@word.clip, clip: {status: status}), class: 'btn', id: "status#{status}", method: :put, remote: true, data: {type: :json}
+  def status_button(duration, status, word)
+    # TODO: clipというパラメータは不要っぽい
+    # app.clip_path(clip, status: 3)
+    # => "/clips/1?status=3"
+    # TODO: PUT -> PATCH(routesのリファクタリングが終わってから
+    link_to duration, clip_path(word.clip, clip: {status: status}),
+      class: 'btn', id: "status#{status}", method: :put, remote: true, data: {type: :json}
   end
 
   def link_to_google(str, query)
