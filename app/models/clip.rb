@@ -13,8 +13,7 @@ class Clip < ActiveRecord::Base
     8 => 4.months
   }
 
-  default_scope -> { order(updated_at: :desc) }
-
+  scope :display, -> { order("clips.updated_at DESC") }
   scope :done, -> { where(status: 8) } # I'm done with the word!
   scope :undone, -> { where.not(status: 8) } # Still working on it!
   scope :level, -> (level) { joins(:word).where(words: { level: level }) }
@@ -39,8 +38,8 @@ class Clip < ActiveRecord::Base
       next_ids = (0..7).inject([]) do |ids, status|
         ids + Clip.overdue(status).pluck(:word_id)
       end
-      # TODO: joins使わずにできないか/orderの順序がRails4で変更されてるので呼び出し順を逆にする
-      Word.joins(:clip).where(id: next_ids).order('clips.status ASC').order('clips.updated_at DESC')
+      # TODO: joins使わずにできないか
+      Word.joins(:clip).where(id: next_ids).merge(Clip.display.order(:status))
     end
 
     def stats
