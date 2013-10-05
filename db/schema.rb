@@ -9,55 +9,55 @@
 # from scratch. The latter is a flawed and unsustainable approach (the more migrations
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
-# It's strongly recommended to check this file into your version control system.
+# It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120909192507) do
+ActiveRecord::Schema.define(version: 20131004164405) do
 
-  create_table "checks", :force => true do |t|
+  create_table "checks", force: true do |t|
     t.integer  "word_id"
     t.integer  "oldstat"
     t.integer  "newstat"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  add_index "checks", ["word_id"], :name => "index_checks_on_word_id"
+  add_index "checks", ["word_id"], name: "index_checks_on_word_id"
 
-  create_table "clips", :force => true do |t|
+  create_table "clips", force: true do |t|
     t.integer  "word_id"
-    t.integer  "status",     :default => 0
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.integer  "status",     default: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  create_table "inverts", :force => true do |t|
+  create_table "inverts", force: true do |t|
     t.string  "token"
     t.integer "item_id"
   end
 
-  add_index "inverts", ["token"], :name => "index_inverts_on_token"
+  add_index "inverts", ["token"], name: "index_inverts_on_token"
 
-  create_table "items", :force => true do |t|
+  create_table "items", force: true do |t|
     t.string "entry"
     t.text   "body"
   end
 
-  add_index "items", ["entry"], :name => "index_items_on_entry"
+  add_index "items", ["entry"], name: "index_items_on_entry"
 
-  create_table "levels", :force => true do |t|
-    t.string  "word"
+  create_table "levels", force: true do |t|
+    t.string  "entry"
     t.integer "level"
     t.string  "definition"
-    t.boolean "known",      :default => false
+    t.boolean "known",      default: false
   end
 
-  add_index "levels", ["word"], :name => "index_levels_on_word"
+  add_index "levels", ["entry"], name: "index_levels_on_entry"
 
-  create_table "words", :force => true do |t|
+  create_table "words", force: true do |t|
     t.string  "entry"
-    t.integer "level",      :default => 0
+    t.integer "level",      default: 0
     t.text    "definition"
-    t.string  "thesaurus",  :default => "none"
+    t.string  "thesaurus",  default: "none"
   end
 
 end

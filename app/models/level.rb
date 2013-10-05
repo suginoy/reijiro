@@ -5,15 +5,15 @@ class Level < ActiveRecord::Base
 
   class << self
     def yet_to_import(level, max = 10)
-      words =
+      levels =
         Level.unknown
         .where(level: level)
-        .where.not(word: Word.imported_list)
+        .where.not(entry: Word.imported_entries)
         .limit(max).pluck(:word)
       if words.empty?
         nil # TODO: nilを返す必要があるか確認
       else
-        words
+        levels
       end
     end
   end

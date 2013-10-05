@@ -11,11 +11,12 @@ class Word < ActiveRecord::Base
   scope :unclipped, -> { where('id NOT IN (SELECT word_id FROM words INNER JOIN clips ON words.id = clips.word_id)') }
 
   before_save :set_level # TODO: before_validationにする
+
   paginates_per 200
 
   def set_level
-    l = Level.where(word: entry) # TODO: findを使う
-    self.level = l.empty? ? 0 : l.first.level  # TODO: Levelのモデル名を変更するか#valueをvalueにする
+    l = Level.find_by(entry: self.entry)
+    self.level = l.nil? ? 0 : l.level # TODO: Levelのモデル名を変更する
   end
 
   class << self
@@ -27,13 +28,13 @@ class Word < ActiveRecord::Base
     end
 
     def search(query)
-      word_name = normalize_query(query)
-      definition = lookup(word_name)
-      thesaurus = lookup_thesaurus(word_name)
+      entry = normalize_query(query)
+      definition = lookup(entry)
+      thesaurus = lookup_thesaurus(entry)
       if definition.empty?
         nil # TODO: nil返さない
       else
-        word = Word.new(entry: word_name, thesaurus: thesaurus, definition: definition)
+        word = Word.new(entry: entry, thesaurus: thesaurus, definition: definition)
         word.build_clip(status: 0)
         word.save!
       end
@@ -51,7 +52,7 @@ class Word < ActiveRecord::Base
       end
     end
 
-    def imported_list
+    def imported_entries
       Word.pluck(:entry)
     end
 
