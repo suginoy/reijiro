@@ -1,7 +1,7 @@
 class ClipsController < ApplicationController
   def index
     # TODO: リテラル使わずにハッシュで書く
-    @words = Word.joins(:clip).where.not(clips: { status: 8 }).order("clips.updated_at DESC").page params[:page]
+    @words = Word.joins(:clip).where.not(clips: { status: 8 }).merge(Clip.display).page params[:page]
     @list_title = "Clipped words"
 
     respond_to do |format|
@@ -11,7 +11,7 @@ class ClipsController < ApplicationController
   end
 
   def all
-    @words = Word.joins(:clip).order("clips.updated_at DESC")
+    @words = Word.joins(:clip).merge(Clip.display)
     @list_title = "All clips"
   end
 
@@ -26,7 +26,7 @@ class ClipsController < ApplicationController
   end
 
   def nextup
-    @words = Clip.next_list.page params[:page]
+    @words = Clip.next_list.display.page params[:page]
     @list_title = "Words to review"
     render 'index'
   end
