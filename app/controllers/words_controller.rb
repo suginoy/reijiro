@@ -1,5 +1,5 @@
 class WordsController < ApplicationController
-  before_filter :load_word, only: [:show, :edit, :update, :destroy]
+  before_action :set_word, only: [:show, :edit, :update, :destroy]
 
   def index
     @words = Word.limit(50)  # TODO: ->定数化->マスタ化
@@ -84,7 +84,9 @@ class WordsController < ApplicationController
     end
   end
 
-private
+  private
 
-  def load_word; @word = Word.find(params[:id]); end
+    def set_word
+      @word = Word.find(params[:id])
+    end
 end
