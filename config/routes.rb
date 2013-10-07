@@ -1,5 +1,5 @@
 Reijiro::Application.routes.draw do
-  resources :words, except: [:new] # TODO: onlyにする ref. Rails Best Practices
+  resources :words, except: [:create, :show, :edit, :update, :destroy]
   resources :clips, only: [:index, :update, :destroy] do
     get :all, on: :collection
   end

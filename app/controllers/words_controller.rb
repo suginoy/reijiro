@@ -10,10 +10,6 @@ class WordsController < ApplicationController
   end
 
   def show
-    respond_to do |format|
-      format.html
-      format.json { render json: @word }
-    end
   end
 
   def create
@@ -29,6 +25,9 @@ class WordsController < ApplicationController
         format.json { render json: @word.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def edit
   end
 
   def update
