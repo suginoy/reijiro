@@ -12,7 +12,7 @@ class ClipsController < ApplicationController
   end
 
   def all
-    @words = Word.joins(:clip).merge(Clip.display)
+    @words = Word.clipped.merge(Clip.display)
     @list_title = "All clips"
   end
 
