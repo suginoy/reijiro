@@ -1,5 +1,6 @@
 class ClipsController < ApplicationController
   before_action :set_clip, only: [:update, :destroy]
+
   def index
     @words = Word.clipped.merge(Clip.display.undone).page params[:page] # Clip.undone.displayだとバグになる
     @list_title = "Clipped words"
@@ -26,20 +27,14 @@ class ClipsController < ApplicationController
   end
 
   def nextup
-    @words = Clip.next_list.display.page params[:page]
+    @words = Clip.next_list.page params[:page]
     @list_title = "Words to review"
     render 'index'
   end
 
   def update
-    # TODO: touchからupdate_attributesまで1メソッドにする
-    # TODO: CheckをWordに紐づけずClipに紐づくようにする(勘定パタン
-    @clip.touch # touch the record, even if there's no change # TODO: 削除可能か調べる
-
-    @clip.word.checks.build(oldstat: @clip.status, newstat: params[:clip]['status'])
-
     respond_to do |format|
-      if @clip.update_attributes(params[:clip])
+      if @clip.update_with_checking_word(clip_params)
         format.html { redirect_to @clip, notice: 'Clip was successfully updated.' }
         format.json { render json: @clip }
       else
@@ -73,4 +68,9 @@ class ClipsController < ApplicationController
     def set_clip
       @clip = Clip.find(params[:id])
     end
+
+    def clip_params
+      params.permit(:id, :word_id, :status)
+    end
+
 end
