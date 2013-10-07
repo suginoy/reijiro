@@ -8,7 +8,7 @@ require 'eijiro/sqlprocessor'
 class EijiroDictionary
   def initialize(path)
     @eijiro_files = find_dictionaries(path)
-    @dbfile = File.join(Rails.root, %w(db development.sqlite3)) # TODO: Rails.env使う
+    @dbfile = File.join(Rails.root, 'db', Rails.env + '.sqlite3')
     @level_table = {}
     @sql = SqlProcessor.new
     @id = 0
