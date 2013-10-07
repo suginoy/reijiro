@@ -8,8 +8,6 @@ class Word < ActiveRecord::Base
   validates :entry, :definition, :level, presence: true
 
   scope :clipped, -> { joins(:clip) }
-  # TODO: NOT IN/JOIN使わない-> カウンタキャッシュにする/このscope使われていない
-  scope :unclipped, -> { where.not(id: self.clipped.pluck(:id)) }
 
   before_save :set_level # TODO: before_validationにする
 
