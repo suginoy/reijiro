@@ -1,6 +1,5 @@
 class Check < ActiveRecord::Base
   belongs_to :word
-  attr_accessible :newstat, :oldstat, :word_id # TODO: Strong Parametersを使う
 
   DAY_START_HOUR = 3  # TODO: 就寝時間に合わせた時間なら設定化する
 

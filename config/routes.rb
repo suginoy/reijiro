@@ -1,5 +1,5 @@
 Reijiro::Application.routes.draw do
-  resources :words, except: [:create, :show, :edit, :update, :destroy]
+  resources :words, only: [:index, :create, :show, :edit, :update, :destroy]
   resources :clips, only: [:index, :update, :destroy] do
     get :all, on: :collection
   end

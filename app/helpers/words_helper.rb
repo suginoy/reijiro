@@ -5,7 +5,7 @@ module WordsHelper
     # app.clip_path(clip, status: 3)
     # => "/clips/1?status=3"
     # TODO: PUT -> PATCH(routesのリファクタリングが終わってから
-    link_to duration, clip_path(word.clip, clip: {status: status}),
+    link_to duration, clip_path(word.clip, { status: status }),
       class: 'btn', id: "status#{status}", method: :put, remote: true, data: {type: :json}
   end
 

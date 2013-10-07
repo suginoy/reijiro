@@ -19,6 +19,11 @@ class Clip < ActiveRecord::Base
   scope :level, -> (level) { joins(:word).where(words: { level: level }) }
   scope :overdue, -> (status) { where(status: status).where('updated_at < ?', Time.now - INTERVAL[status]) }
 
+  def update_with_checking_word(clip_params)
+    self.word.checks.build(oldstat: self.status, newstat: clip_params[:status])
+    self.update_attributes(clip_params)
+  end
+
   class << self
     def overdue_count
       (0..7).inject(0){|acc, status| acc += Clip.overdue(status).count}
