@@ -11,7 +11,7 @@ class LevelsController < ApplicationController
     @levels =
       Level.unknown
       .where(level: params[:level])
-      .where.not(entry: Word.imported_entries) # TODO: NOT使わない
+      .where.not(entry: Word.imported_entries) # TODO: NOT使わない/modelに同じコードがあるので共通化
   end
 
   def known
