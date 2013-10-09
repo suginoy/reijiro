@@ -17,15 +17,15 @@ feature 'Check word' do
     page.should have_content 'Pronunciation'
   end
 
-#  scenario 'after checking the word, checked should be incremented', js: true do
-#    visit word_path(@word)
-#    find('#next').click
-#    visit word_path(@word)
-#    page.should have_content 'Checked: 1 times'
-#
-#    visit word_path(@word)
-#    find('#next').click
-#    visit word_path(@word)
-#    page.should have_content 'Checked: 2 times'
-#  end
+  pending 'after checking the word, checked should be incremented', js: true do
+    visit word_path(@word)
+    find('#next').click
+    visit word_path(@word)
+    page.should have_content 'Checked: 1 times'
+
+    visit word_path(@word)
+    find('#next').click
+    visit word_path(@word)
+    page.should have_content 'Checked: 2 times'
+  end
 end
