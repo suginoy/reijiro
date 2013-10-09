@@ -59,7 +59,7 @@ class EijiroDictionary
     def finish
       flush
       # execute the generated sqls
-      database = File.join(Rails.root, %w(db development.sqlite3))
+      database = File.join(Rails.root, "db", Rails.env + ".sqlite3")
       n = %x{ ls -1 #{File.join(Rails.root, "db", "eijiro*")} |wc -l }.chomp.strip.to_i
       pbar = ProgressBar.new("Executing SQL commands...", n)
       Dir.foreach(File.join(Rails.root, "db")) do |file|
