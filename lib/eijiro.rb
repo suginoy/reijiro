@@ -53,8 +53,8 @@ class EijiroDictionary
     puts "Writing to level table..."
     db = SQLite3::Database.new(@dbfile)
     (1..12).each do |level|
-      @level_table[level].each do |word|
-        db.execute("INSERT INTO levels (word, level) VALUES (#{sqlstr(word)}, #{level});")
+      @level_table[level].each do |entry|
+        db.execute("INSERT INTO levels (entry, level) VALUES (#{sqlstr(entry)}, #{level});")
       end
     end
     db.close
@@ -65,13 +65,13 @@ class EijiroDictionary
     db = SQLite3::Database.new(@dbfile)
     (1..12).each do |level|
       pbar = ProgressBar.new("Level #{level}", Level.where(level: level).count)
-      Level.where(level: level).map(&:word).each do |word|
+      Level.where(level: level).map(&:entry).each do |entry|
         word.downcase!
         pbar.inc
-        eijiro = db.execute("SELECT items.body FROM items WHERE entry = #{sqlstr(word)}")
-        reijiro = db.execute("SELECT items.body FROM items INNER JOIN inverts ON items.id = inverts.item_id WHERE inverts.token = #{sqlstr(word)} AND items.entry != #{sqlstr(word)}")
+        eijiro = db.execute("SELECT items.body FROM items WHERE entry = #{sqlstr(entry)}")
+        reijiro = db.execute("SELECT items.body FROM items INNER JOIN inverts ON items.id = inverts.item_id WHERE inverts.token = #{sqlstr(entry)} AND items.entry != #{sqlstr(entry)}")
         definition = (eijiro + reijiro).join("\n")
-        db.execute("INSERT INTO words (entry, level, definition) VALUES (#{sqlstr(word)}, #{level}, #{sqlstr(definition)});")
+        db.execute("INSERT INTO words (entry, level, definition) VALUES (#{sqlstr(entry)}, #{level}, #{sqlstr(definition)});")
       end
       pbar.finish
     end
