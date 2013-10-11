@@ -5,10 +5,15 @@ class Check < ActiveRecord::Base
 
   scope :today, -> { where('created_at > ?', Time.now.beginning_of_day + DAY_START_HOUR.hours) }
 
+  after_touch :sync_created_on
+
+  def sync_created_on
+    self.created_on = self.created_at.to_date
+  end
+
   class << self
-    def checks_per_date
-      checks = Check.order(:created_at)
-      checks.group_by { |t| t.created_at.to_date }
+    def checks_count_per_date
+      Check.group(:created_on).order(:created_on).count(:created_on).to_a
     end
   end
 end

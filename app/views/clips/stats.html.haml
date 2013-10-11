@@ -72,7 +72,7 @@
 %h2 Checked
 
 %table.table.table-striped.table-bordered
-  - @checks_per_date.each do |date, checks|
+  - @checks_count_per_date.each do |date, checks_count|
     %tr
       %td= date.to_date
-      %td= checks.count
+      %td= checks_count

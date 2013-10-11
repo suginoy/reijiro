@@ -54,7 +54,7 @@ class ClipsController < ApplicationController
   end
 
   def stats
-    @checks_per_date = Check.checks_per_date
+    @checks_count_per_date = Check.checks_count_per_date
     @stats = Clip.stats
 
     respond_to do |format|
