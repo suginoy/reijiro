@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131005134320) do
+ActiveRecord::Schema.define(version: 20131010142611) do
 
   create_table "checks", force: true do |t|
     t.integer  "word_id"
@@ -19,9 +19,10 @@ ActiveRecord::Schema.define(version: 20131005134320) do
     t.integer  "newstat"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.date     "created_on"
   end
 
-  add_index "checks", ["created_at"], name: "index_checks_on_created_at"
+  add_index "checks", ["created_on"], name: "index_checks_on_created_on"
   add_index "checks", ["word_id"], name: "index_checks_on_word_id"
 
   create_table "clips", force: true do |t|
