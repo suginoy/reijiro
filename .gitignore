@@ -28,3 +28,5 @@ config/basic_authentication.rb
 # Ingnore Bundler
 /vendor/bundle
 
+# Ignore .DS_Store in Mac OS
+.DS_Store
