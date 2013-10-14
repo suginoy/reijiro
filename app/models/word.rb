@@ -5,11 +5,13 @@ class Word < ActiveRecord::Base
   has_one :clip, dependent: :destroy
   has_many :checks, dependent: :destroy
   # TODO: Levelとの間に関連を持たせる
-  validates :entry, :definition, :level, presence: true
+  validates :entry, presence: true
+  validates :definition, presence: true
+  validates :level, presence: true, inclusion: { in: (0..12).to_a } # Levelは最終的に無くなるので共通化しない
 
   scope :clipped, -> { joins(:clip) }
 
-  before_save :set_level # TODO: before_validationにする
+  before_validation :set_level
 
   paginates_per 200
 
