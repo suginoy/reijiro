@@ -1,6 +1,11 @@
 class Clip < ActiveRecord::Base
   belongs_to :word
-  validates_uniqueness_of :word_id # TODO: validatesにする
+
+  validates :word_id, presence: true, uniqueness: true
+  validates :status, presence: true, inclusion: { in: (0..8).to_a }
+
+  after_initialize :set_default_values
+
   INTERVAL = { # TODO: マスタ化する
     0 => 0.second,
     1 => 1.day,
@@ -18,6 +23,10 @@ class Clip < ActiveRecord::Base
   scope :undone, -> { where.not(status: 8) } # Still working on it!
   scope :level, -> (level) { joins(:word).where(words: { level: level }) }
   scope :overdue, -> (status) { where(status: status).where('updated_at < ?', Time.now - INTERVAL[status]) }
+
+  def set_default_values
+    self.status ||= 0
+  end
 
   def update_with_checking_word(clip_params)
     self.word.checks.build(oldstat: self.status, newstat: clip_params[:status])
