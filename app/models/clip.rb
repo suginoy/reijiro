@@ -49,11 +49,10 @@ class Clip < ActiveRecord::Base
     end
 
     def next_list
-      next_ids = (0..7).inject([]) do |ids, status|
+      overdue_word_ids = (0..7).inject([]) do |ids, status|
         ids + Clip.overdue(status).pluck(:word_id)
       end
-      # TODO: joins使わずにできないか
-      Word.joins(:clip).where(id: next_ids).merge(Clip.display.order(:status))
+      Word.clipped.where(id: overdue_word_ids).merge(Clip.display.order(:status))
     end
 
     def stats
