@@ -1,5 +1,4 @@
 class Level < ActiveRecord::Base
-  # TODO: add validation
   scope :known,   -> { where(known: true) }
   scope :unknown, -> { where(known: false) }
 
