@@ -7,7 +7,7 @@ class ClipsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @clips }
+      format.json { render json: @clips } # TODO: バグってる .json必要か確認する
     end
   end
 
