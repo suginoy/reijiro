@@ -73,7 +73,7 @@ class WordsController < ApplicationController
 
   def async_import
     @query = query_params[:word].downcase.chomp # TODO: パラメータ名変える
-    if Word.where(entry: @query).empty?
+    if Word.find_by(entry: @query).nil?
       EM.defer do
         @word = Word.search(@query)
       end
