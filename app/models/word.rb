@@ -35,9 +35,9 @@ class Word < ActiveRecord::Base
       if definition.empty?
         nil # TODO: nil返さない
       else
-        word = Word.new(entry: entry, thesaurus: thesaurus, definition: definition)
-        word.build_clip(status: 0)
-        word.save!
+        @word = Word.new(entry: entry, thesaurus: thesaurus, definition: definition)
+        @word.build_clip(status: 0)
+        @word.save!
       end
     end
 
