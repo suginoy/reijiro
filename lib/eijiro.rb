@@ -2,7 +2,7 @@
 require 'kconv'
 require 'sqlite3'
 require 'yaml'
-require 'progressbar'
+require 'ruby-progressbar'
 require 'eijiro/sqlprocessor'
 
 class EijiroDictionary
@@ -19,7 +19,7 @@ class EijiroDictionary
       File.open(dic) do |f|
         number_of_lines = %x{ wc -l #{dic}}.split.first.to_i
         puts "Convert Eijiro file to sql: #{dic}\n (#{number_of_lines} entries)"
-        pbar = ProgressBar.new("Converting", number_of_lines)
+        pbar = ProgressBar.create(title: "Converting", total: number_of_lines)
 
         f.each_line do |l|
           line = Kconv.kconv(l, Kconv::UTF8, Kconv::SJIS) # TODO: Kconv使わない
@@ -34,7 +34,7 @@ class EijiroDictionary
             end
             body = line.chomp
             @sql.generate(@id, entry, body)
-            pbar.inc
+            pbar.increment
           end
         end
         pbar.finish
@@ -67,7 +67,7 @@ class EijiroDictionary
       pbar = ProgressBar.new("Level #{level}", Level.where(level: level).count)
       Level.where(level: level).map(&:entry).each do |entry|
         word.downcase!
-        pbar.inc
+        pbar.increment
         eijiro = db.execute("SELECT items.body FROM items WHERE entry = #{sqlstr(entry)}")
         reijiro = db.execute("SELECT items.body FROM items INNER JOIN inverts ON items.id = inverts.item_id WHERE inverts.token = #{sqlstr(entry)} AND items.entry != #{sqlstr(entry)}")
         definition = (eijiro + reijiro).join("\n")
