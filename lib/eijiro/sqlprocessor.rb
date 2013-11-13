@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-require 'progressbar'
+require 'ruby-progressbar'
 
 class EijiroDictionary
   class SqlProcessor
@@ -61,10 +61,10 @@ class EijiroDictionary
       # execute the generated sqls
       database = File.join(Rails.root, "db", Rails.env + ".sqlite3")
       n = %x{ ls -1 #{File.join(Rails.root, "db", "eijiro*")} |wc -l }.chomp.strip.to_i
-      pbar = ProgressBar.new("Executing SQL commands...", n)
+      pbar = ProgressBar.create(title: "Executing SQL commands...", total: n)
       Dir.foreach(File.join(Rails.root, "db")) do |file|
         if file =~ /eijiro.+\.sql/
-          pbar.inc
+          pbar.increment
           file = File.join(Rails.root, "db", file)
           system("sqlite3 #{database} \".read #{file}\"")
           system("rm #{file}")
