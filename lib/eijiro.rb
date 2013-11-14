@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-require 'kconv'
 require 'sqlite3'
 require 'yaml'
 require 'ruby-progressbar'
@@ -16,13 +15,12 @@ class EijiroDictionary
 
   def convert_to_sql
     @eijiro_files.each do |dic|
-      File.open(dic) do |f|
+      File.open(dic, 'r:cp932:UTF-8') do |f|
         number_of_lines = %x{ wc -l #{dic}}.split.first.to_i
         puts "Convert Eijiro file to sql: #{dic}\n (#{number_of_lines} entries)"
         pbar = ProgressBar.create(title: "Converting", total: number_of_lines)
 
-        f.each_line do |l|
-          line = Kconv.kconv(l, Kconv::UTF8, Kconv::SJIS) # TODO: Kconv使わない
+        f.each_line do |line|
           line.gsub!(/◆.+$/, '')
           if line =~ /■(.*?)(?:  ?\{.*?\})? : (【レベル】([0-9]+))?/
             @id += 1
