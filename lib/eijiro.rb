@@ -27,10 +27,10 @@ class EijiroDictionary
           if line =~ /■(.*?)(?:  ?\{.*?\})? : (【レベル】([0-9]+))?/
             @id += 1
             entry = $1.downcase
-            level = $3 ? $3 : 0
+            level = $3 ? $3.to_i : 0
             if level != 0
-              @level_table[level.to_i] ||= []
-              @level_table[level.to_i] << entry
+              @level_table[level] ||= []
+              @level_table[level] << entry
             end
             body = line.chomp
             @sql.generate(@id, entry, body)
@@ -52,8 +52,8 @@ class EijiroDictionary
   def write_level
     puts "Writing to level table..."
     db = SQLite3::Database.new(@dbfile)
-    (1..12).each do |level|
-      @level_table[level].each do |entry|
+    @level_table.each do |level, entries|
+      entries.each do |entry|
         db.execute("INSERT INTO levels (entry, level) VALUES (#{sqlstr(entry)}, #{level});")
       end
     end
