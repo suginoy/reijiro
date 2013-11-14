@@ -52,7 +52,7 @@ class EijiroDictionary
     db = SQLite3::Database.new(@dbfile)
     @level_table.each do |level, entries|
       entries.each do |entry|
-        db.execute("INSERT INTO levels (entry, level) VALUES (#{sqlstr(entry)}, #{level});")
+        db.execute("INSERT INTO levels (entry, level) VALUES (#{@sql.sqlstr(entry)}, #{level});")
       end
     end
     db.close
@@ -74,7 +74,4 @@ private
     eijiro_files
   end
 
-  def sqlstr(str)
-    "'#{str.gsub(/'/,"''")}'"
-  end
 end
