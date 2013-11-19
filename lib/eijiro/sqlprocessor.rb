@@ -50,6 +50,7 @@ class EijiroDictionary
       end
       if id % @flush_limit == 0
         flush
+        @sqlfile.close
         @sqlfile.open
       end
     end
@@ -57,7 +58,6 @@ class EijiroDictionary
     def flush
       @sqlfile.write(@sql)
       @sql = []
-      @sqlfile.close
     end
 
     def finish
