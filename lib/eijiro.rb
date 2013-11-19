@@ -9,7 +9,7 @@ class EijiroDictionary
     @eijiro_files = find_dictionaries(path)
     @dbfile = File.join(Rails.root, 'db', Rails.env + '.sqlite3')
     @level_table = {}
-    @sql = SqlProcessor.new
+    @sql = SqlProcessor.new(@dbfile)
     @id = 0
   end
 
