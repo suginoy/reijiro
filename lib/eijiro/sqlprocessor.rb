@@ -22,6 +22,12 @@ class EijiroDictionary
         end
       end
 
+      def write(queries)
+        File.open(current_file, "a") do |f|
+          f.write queries.join("\n")
+        end
+      end
+
       def close
         File.open(current_file, "a") do |f|
           f.write "\nEND TRANSACTION;\n"
@@ -49,9 +55,7 @@ class EijiroDictionary
     end
 
     def flush
-      File.open(@sqlfile.current_file, "a") do |f|
-        f.write @sql.join("\n")
-      end
+      @sqlfile.write(@sql)
       @sql = []
       @sqlfile.close
     end
