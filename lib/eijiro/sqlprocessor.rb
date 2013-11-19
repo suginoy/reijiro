@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 require 'ruby-progressbar'
 
 class EijiroDictionary

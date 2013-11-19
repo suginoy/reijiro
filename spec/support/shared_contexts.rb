@@ -1,5 +1,3 @@
-# coding: utf-8
-
 shared_context 'just created 100 clips' do
   background do
     create_list(:clip, 100)

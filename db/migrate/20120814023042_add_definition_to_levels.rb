@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 class AddDefinitionToLevels < ActiveRecord::Migration
   def change
     add_column :levels, :definition, :string
