@@ -40,13 +40,13 @@ class EijiroDictionary
       @flush_limit = 10_0000
       @sqlfile = SqlFile.new
       @sqlfile.open
-      @sql = []
+      @queries = []
     end
 
     def generate(id, entry, body)
-      @sql << "INSERT INTO items (entry, body) VALUES (#{sqlstr(entry)}, #{sqlstr(body)});"
-      tokenize(entry).each do |token|
-        @sql << "INSERT INTO inverts (token, item_id) VALUES (#{sqlstr(token)}, #{id});"
+      @queries << "INSERT INTO items (entry, body) VALUES (#{sqlstr(entry)}, #{sqlstr(body)});"
+      tokenize(entry).each do |token| # TODO: BULK INSERT
+        @queries << "INSERT INTO inverts (token, item_id) VALUES (#{sqlstr(token)}, #{id});"
       end
       if id % @flush_limit == 0
         flush
@@ -56,13 +56,12 @@ class EijiroDictionary
     end
 
     def flush
-      @sqlfile.write(@sql)
-      @sql = []
+      @sqlfile.write(@queries)
+      @queries = []
     end
 
-    def finish
+    def execute_queries
       flush
-      # execute the generated sqls
       database = File.join(Rails.root, "db", Rails.env + ".sqlite3")
       n = %x{ ls -1 #{File.join(Rails.root, "db", "eijiro*")} |wc -l }.chomp.strip.to_i
       pbar = ProgressBar.create(title: "Executing SQL commands...", total: n)

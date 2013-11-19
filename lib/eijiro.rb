@@ -43,7 +43,7 @@ class EijiroDictionary
   def write_to_database
     puts "\nWriting to the database tables."
     puts "This process may take several minutes."
-    @sql.finish
+    @sql.execute_queries
     puts "Done."
   end
 
