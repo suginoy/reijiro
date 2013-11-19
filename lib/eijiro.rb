@@ -64,9 +64,7 @@ private
     eijiro_files = []
     Dir.foreach(path) do |file|
       case file
-        when /^EIJI-.*\.TXT/i
-        eijiro_files << File.join(path, file)
-      when /^REIJI.*\.TXT/i
+      when /^EIJI-.*\.TXT/i, /^REIJI.*\.TXT/i
         eijiro_files << File.join(path, file)
       end
     end
