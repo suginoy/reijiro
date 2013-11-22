@@ -1,10 +1,5 @@
 class LevelsController < ApplicationController
   def index
-    # TODO: @to_importって使われていなくないか？？
-    @to_import = Array.new(12 + 1)
-    (1..12).each do |level|
-      @to_import[level] = Level.yet_to_import(level, 5)
-    end
   end
 
   def show
