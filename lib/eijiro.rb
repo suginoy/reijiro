@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 require 'sqlite3'
 require 'yaml'
 require 'ruby-progressbar'

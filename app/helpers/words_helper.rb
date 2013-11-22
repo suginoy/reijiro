@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 module WordsHelper
   def status_button(duration, status, word)
     # TODO: clipというパラメータは不要っぽい
