@@ -23,9 +23,9 @@ class Word < ActiveRecord::Base
   class << self
     def lookup(query)
       normalized_query = normalize_query(query)
-      items = Item.where(entry: normalized_query).to_a
-      items += Invert.where(token: normalized_query).map(&:item) # TODO: Itemから引いてくる
-      items.uniq.map(&:body).join("\n") # TODO: 先にpluckかselectで絞り込む/uniqにブロック使う
+      items = Item.where(entry: normalized_query).pluck(:body)
+      items += Item.includes(:inverts).where(inverts: { token: normalized_query }).uniq.pluck(:body)
+      items.uniq.join("\n")
     end
 
     def search(query)

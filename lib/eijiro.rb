@@ -7,8 +7,8 @@ class EijiroDictionary
   def initialize(path)
     @eijiro_files = find_dictionaries(path)
     @dbfile = File.join(Rails.root, 'db', Rails.env + '.sqlite3')
-    @level_table = {}
-    @sql = SqlProcessor.new
+    @level_table = Hash.new { |h, k| h[k] = [] }
+    @sql = SqlProcessor.new(@dbfile)
     @id = 0
   end
 
@@ -25,10 +25,7 @@ class EijiroDictionary
             @id += 1
             entry = $1.downcase
             level = $3 ? $3.to_i : 0
-            if level != 0
-              @level_table[level] ||= []
-              @level_table[level] << entry
-            end
+            @level_table[level] << entry if level != 0
             body = line.chomp
             @sql.generate(@id, entry, body)
             pbar.increment
@@ -42,7 +39,7 @@ class EijiroDictionary
   def write_to_database
     puts "\nWriting to the database tables."
     puts "This process may take several minutes."
-    @sql.finish
+    @sql.execute_queries
     puts "Done."
   end
 
@@ -63,9 +60,7 @@ private
     eijiro_files = []
     Dir.foreach(path) do |file|
       case file
-        when /^EIJI-.*\.TXT/i
-        eijiro_files << File.join(path, file)
-      when /^REIJI.*\.TXT/i
+      when /^EIJI-.*\.TXT/i, /^REIJI.*\.TXT/i
         eijiro_files << File.join(path, file)
       end
     end

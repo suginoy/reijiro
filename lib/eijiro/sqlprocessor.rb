@@ -21,6 +21,12 @@ class EijiroDictionary
         end
       end
 
+      def write(queries)
+        File.open(current_file, "a") do |f|
+          f.write queries.join("\n")
+        end
+      end
+
       def close
         File.open(current_file, "a") do |f|
           f.write "\nEND TRANSACTION;\n"
@@ -29,45 +35,39 @@ class EijiroDictionary
       end
     end
 
-    def initialize
+    def initialize(database)
       @flush_limit = 10_0000
       @sqlfile = SqlFile.new
       @sqlfile.open
-      @sql = []
+      @queries = []
+      @database = database
     end
 
     def generate(id, entry, body)
-      @sql << "INSERT INTO items (entry, body) VALUES (#{sqlstr(entry)}, #{sqlstr(body)});"
-      tokenize(entry).each do |token|
-        @sql << "INSERT INTO inverts (token, item_id) VALUES (#{sqlstr(token)}, #{id});"
+      @queries << "INSERT INTO items (entry, body) VALUES (#{sqlstr(entry)}, #{sqlstr(body)});"
+      tokenize(entry).each do |token| # TODO: BULK INSERT
+        @queries << "INSERT INTO inverts (token, item_id) VALUES (#{sqlstr(token)}, #{id});"
       end
       if id % @flush_limit == 0
         flush
+        @sqlfile.close
         @sqlfile.open
       end
     end
 
     def flush
-      File.open(@sqlfile.current_file, "a") do |f|
-        f.write @sql.join("\n")
-      end
-      @sql = []
-      @sqlfile.close
+      @sqlfile.write(@queries)
+      @queries = []
     end
 
-    def finish
+    def execute_queries
       flush
-      # execute the generated sqls
-      database = File.join(Rails.root, "db", Rails.env + ".sqlite3")
-      n = %x{ ls -1 #{File.join(Rails.root, "db", "eijiro*")} |wc -l }.chomp.strip.to_i
+      n = %x{ ls -1 #{File.join(Rails.root, "db", "eijiro*.sql")} |wc -l }.chomp.strip.to_i
       pbar = ProgressBar.create(title: "Executing SQL commands...", total: n)
-      Dir.foreach(File.join(Rails.root, "db")) do |file|
-        if file =~ /eijiro.+\.sql/
-          pbar.increment
-          file = File.join(Rails.root, "db", file)
-          system("sqlite3 #{database} \".read #{file}\"")
-          system("rm #{file}")
-        end
+      Dir.glob(File.join(Rails.root, "db", "eijiro*.sql")).each do |sql_file|
+        pbar.increment
+        system("sqlite3 #{@database} \".read #{sql_file}\"")
+        system("rm #{sql_file}")
       end
       pbar.finish
     end
