@@ -24,7 +24,7 @@ class Word < ActiveRecord::Base
     def lookup(query)
       normalized_query = normalize_query(query)
       items = Item.where(entry: normalized_query).pluck(:body)
-      items += Item.includes(:inverts).where(inverts: { token: normalized_query }).references(:inverts).uniq.pluck(:body)
+      items += Item.includes(:inverts).where(inverts: { token: normalized_query }).uniq.pluck(:body)
       items.uniq.join("\n")
     end
 
