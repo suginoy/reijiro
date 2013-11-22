@@ -8,7 +8,7 @@ class EijiroDictionary
   def initialize(path)
     @eijiro_files = find_dictionaries(path)
     @dbfile = File.join(Rails.root, 'db', Rails.env + '.sqlite3')
-    @level_table = {}
+    @level_table = Hash.new { |h, k| h[k] = [] }
     @sql = SqlProcessor.new(@dbfile)
     @id = 0
   end
@@ -26,10 +26,7 @@ class EijiroDictionary
             @id += 1
             entry = $1.downcase
             level = $3 ? $3.to_i : 0
-            if level != 0
-              @level_table[level] ||= []
-              @level_table[level] << entry
-            end
+            @level_table[level] << entry if level != 0
             body = line.chomp
             @sql.generate(@id, entry, body)
             pbar.increment
